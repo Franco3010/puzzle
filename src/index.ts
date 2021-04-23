@@ -56,53 +56,53 @@ const init = async () => {
   let squareInfo: { value: number; coorX: number; coorY: number }[] = [
     {
       value: 100,
-      coorX: 5,
+      coorX: 4.5,
       coorY: 19
     },
     {
       value: 0,
-      coorX: 5,
-      coorY: 30
+      coorX: 4.5,
+      coorY: 33
     },
     {
       value: 1,
-      coorX: 16,
-      coorY: 30
+      coorX: 18.5,
+      coorY: 33
     },
     {
       value: 2,
-      coorX: 27,
-      coorY: 30
+      coorX: 32.5,
+      coorY: 33
     },
     {
       value: 3,
-      coorX: 5,
-      coorY: 41
+      coorX: 4.5,
+      coorY: 47
     },
     {
       value: 4,
-      coorX: 16,
-      coorY: 41
+      coorX: 18.5,
+      coorY: 47
     },
     {
       value: 5,
-      coorX: 27,
-      coorY: 41
+      coorX: 32.5,
+      coorY: 47
     },
     {
       value: 6,
-      coorX: 5,
-      coorY: 52
+      coorX: 4.5,
+      coorY: 61
     },
     {
       value: 7,
-      coorX: 16,
-      coorY: 52
+      coorX: 18.5,
+      coorY: 61
     },
     {
       value: 8,
-      coorX: 27,
-      coorY: 52
+      coorX: 32.5,
+      coorY: 61
     }
   ];
   let randomIndexArr = [0, 1, 2, 3, 4, 5, 6, 7, 8];
@@ -115,6 +115,9 @@ const init = async () => {
 
   const bgImg = await loadTexture(gl, './dating-bg.jpg');
   const mainImgs = await loadTexture(gl, './tingme.jpg');
+  const lineDoc = await loadTexture(gl, './doc.png');
+  const lineNgang = await loadTexture(gl, './ngang.png');
+
   const regions = TextureRegion.splitTexture(mainImgs, 3, 3);
 
   gl.clearColor(1, 0.6, 0.6, 1);
@@ -133,12 +136,11 @@ const init = async () => {
       square =>
         (square.value != 100 &&
           square.coorY == squareInfo[emptyIndex].coorY &&
-          Math.abs(Math.round(square.coorX) - squareInfo[emptyIndex].coorX) ==
-            11) ||
+          Math.abs(square.coorX - squareInfo[emptyIndex].coorX) == 14) ||
         (square.value != 100 &&
           square.coorX == squareInfo[emptyIndex].coorX &&
           Math.abs(Math.round(square.coorY) - squareInfo[emptyIndex].coorY) ==
-            11)
+            14)
     );
 
     window.addEventListener('mousedown', function () {
@@ -147,9 +149,9 @@ const init = async () => {
       for (let square of canSwapSquare) {
         if (
           varX > square.coorX &&
-          varX < square.coorX + 10 &&
+          varX < square.coorX + 13 &&
           varY > square.coorY &&
-          varY < square.coorY + 10 &&
+          varY < square.coorY + 13 &&
           square.value != 100
         ) {
           squareChoose = square.value;
@@ -168,9 +170,9 @@ const init = async () => {
       for (let square of canSwapSquare) {
         if (
           varX > square.coorX &&
-          varX < square.coorX + 10 &&
+          varX < square.coorX + 13 &&
           varY > square.coorY &&
-          varY < square.coorY + 10 &&
+          varY < square.coorY + 13 &&
           square.value != 100
         ) {
           squareChoose = square.value;
@@ -185,9 +187,9 @@ const init = async () => {
 
     for (let square of squareInfo) {
       if (square.value != 100 && startSwap == 0) {
-        regions[square.value].draw(batch, square.coorX, square.coorY, 10, 10);
+        regions[square.value].draw(batch, square.coorX, square.coorY, 13, 13);
       } else if (square.value != 100 && startSwap == 1) {
-        regions[square.value].draw(batch, square.coorX, square.coorY, 10, 10);
+        regions[square.value].draw(batch, square.coorX, square.coorY, 13, 13);
         if (
           squareInfo[emptyIndex].coorY == squareInfo[squareChooseIndex].coorY
         ) {
@@ -200,8 +202,8 @@ const init = async () => {
               batch,
               (squareInfo[squareChooseIndex].coorX += 20 * delta),
               squareInfo[squareChooseIndex].coorY,
-              10,
-              10
+              13,
+              13
             );
             if (
               squareInfo[emptyIndex].coorX < squareInfo[squareChooseIndex].coorX
@@ -210,13 +212,13 @@ const init = async () => {
                 batch,
                 squareInfo[emptyIndex].coorX,
                 squareInfo[squareChooseIndex].coorY,
-                10,
-                10
+                13,
+                13
               );
               squareInfo[squareChooseIndex].coorX =
                 squareInfo[emptyIndex].coorX;
 
-              squareInfo[emptyIndex].coorX = squareInfo[emptyIndex].coorX - 11;
+              squareInfo[emptyIndex].coorX = squareInfo[emptyIndex].coorX - 14;
               squareChooseAssigend = true;
             }
           }
@@ -230,8 +232,8 @@ const init = async () => {
               batch,
               (squareInfo[squareChooseIndex].coorX -= 20 * delta),
               squareInfo[squareChooseIndex].coorY,
-              10,
-              10
+              13,
+              13
             );
             if (
               squareInfo[emptyIndex].coorX > squareInfo[squareChooseIndex].coorX
@@ -240,13 +242,13 @@ const init = async () => {
                 batch,
                 squareInfo[emptyIndex].coorX,
                 squareInfo[squareChooseIndex].coorY,
-                10,
-                10
+                13,
+                13
               );
               squareInfo[squareChooseIndex].coorX =
                 squareInfo[emptyIndex].coorX;
 
-              squareInfo[emptyIndex].coorX = squareInfo[emptyIndex].coorX + 11;
+              squareInfo[emptyIndex].coorX = squareInfo[emptyIndex].coorX + 14;
               squareChooseAssigend = true;
             }
           }
@@ -264,8 +266,8 @@ const init = async () => {
               batch,
               squareInfo[squareChooseIndex].coorX,
               (squareInfo[squareChooseIndex].coorY += 20 * delta),
-              10,
-              10
+              13,
+              13
             );
             if (
               squareInfo[emptyIndex].coorY < squareInfo[squareChooseIndex].coorY
@@ -274,13 +276,13 @@ const init = async () => {
                 batch,
                 squareInfo[squareChooseIndex].coorX,
                 squareInfo[emptyIndex].coorY,
-                10,
-                10
+                13,
+                13
               );
               squareInfo[squareChooseIndex].coorY =
                 squareInfo[emptyIndex].coorY;
               console.log(squareInfo[squareChooseIndex].coorY);
-              squareInfo[emptyIndex].coorY = squareInfo[emptyIndex].coorY - 11;
+              squareInfo[emptyIndex].coorY = squareInfo[emptyIndex].coorY - 14;
 
               squareChooseAssigend = true;
             }
@@ -295,8 +297,8 @@ const init = async () => {
               batch,
               squareInfo[squareChooseIndex].coorX,
               (squareInfo[squareChooseIndex].coorY -= 20 * delta),
-              10,
-              10
+              13,
+              13
             );
             if (
               squareInfo[emptyIndex].coorY > squareInfo[squareChooseIndex].coorY
@@ -305,13 +307,13 @@ const init = async () => {
                 batch,
                 squareInfo[squareChooseIndex].coorX,
                 squareInfo[emptyIndex].coorY,
-                10,
-                10
+                13,
+                13
               );
               squareInfo[squareChooseIndex].coorY =
                 squareInfo[emptyIndex].coorY;
               console.log(squareInfo[squareChooseIndex].coorY);
-              squareInfo[emptyIndex].coorY = squareInfo[emptyIndex].coorY + 11;
+              squareInfo[emptyIndex].coorY = squareInfo[emptyIndex].coorY + 14;
 
               squareChooseAssigend = true;
             }
@@ -319,6 +321,16 @@ const init = async () => {
         }
       }
     }
+    batch.draw(lineDoc, 1.5, 18.5, 5, 56.5);
+    batch.draw(lineDoc, 44.5, 32.5, 3, 42.5);
+    batch.draw(lineDoc, 16.5, 18.5, 3, 14);
+
+    batch.draw(lineNgang, 4, 17, 14, 3);
+
+    batch.draw(lineNgang, 4, 73.5, 42, 3);
+    batch.draw(lineNgang, 18, 31, 28, 3);
+    // batch.draw(lineNgang, 0, 15, 10, 10);
+
     if (squareChooseAssigend == true) {
       squareChooseAssigend = false;
       startSwap = 0;
