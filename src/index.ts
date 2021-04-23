@@ -162,6 +162,27 @@ const init = async () => {
       }
     });
 
+    window.addEventListener('touchstart', function () {
+      let varX = inputHandler.getTouchedWorldCoord().x;
+      let varY = inputHandler.getTouchedWorldCoord().y;
+      for (let square of canSwapSquare) {
+        if (
+          varX > square.coorX &&
+          varX < square.coorX + 10 &&
+          varY > square.coorY &&
+          varY < square.coorY + 10 &&
+          square.value != 100
+        ) {
+          squareChoose = square.value;
+          squareChooseIndex = squareInfo.findIndex(
+            x => x.value === squareChoose
+          ); //ok
+
+          startSwap = 1;
+        }
+      }
+    });
+
     for (let square of squareInfo) {
       if (square.value != 100 && startSwap == 0) {
         regions[square.value].draw(batch, square.coorX, square.coorY, 10, 10);
