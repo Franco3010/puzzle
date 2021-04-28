@@ -34,48 +34,41 @@ import {
 let squareChoose = 1000;
 
 const init = async () => {
-  // image.image();
-  // let scaleBack0 = 1;
-  // let scaleBack1 = 1;
-  // let scaleBackCompare =0 ;
-  // let scaleItem1 = 1.2;
-  // let scaleItem2 = 1.2
-  // let scaleCloth = 0;
-  // let scaleShoe = 0;
-  // let Compare = 0;
-
-  let accumulate = 0;
-  let stop0 = 0;
-  let stopY1 = 0;
-  let stopY2 = 0;
+  let inversion: number = 0;
+  let inversion1: number = 0;
+  let canSwap: number = 0;
   let squareChooseAssigend: boolean = false;
   let canSwapSquare: { value: number; coorX: number; coorY: number }[];
-  let count = 0;
   let startSwap = 0;
+  let index0: number;
+  let index1: number;
+  let index2: number;
+  let width = 13;
+  let height = 13;
 
   let squareInfo: { value: number; coorX: number; coorY: number }[] = [
     {
-      value: 100,
+      value: 0,
       coorX: 4.5,
       coorY: 19
     },
     {
-      value: 0,
+      value: 100,
       coorX: 4.5,
       coorY: 33
     },
     {
-      value: 1,
+      value: 3,
       coorX: 18.5,
       coorY: 33
     },
     {
-      value: 2,
+      value: 6,
       coorX: 32.5,
       coorY: 33
     },
     {
-      value: 3,
+      value: 1,
       coorX: 4.5,
       coorY: 47
     },
@@ -85,17 +78,17 @@ const init = async () => {
       coorY: 47
     },
     {
-      value: 5,
+      value: 7,
       coorX: 32.5,
       coorY: 47
     },
     {
-      value: 6,
+      value: 2,
       coorX: 4.5,
       coorY: 61
     },
     {
-      value: 7,
+      value: 5,
       coorX: 18.5,
       coorY: 61
     },
@@ -105,11 +98,86 @@ const init = async () => {
       coorY: 61
     }
   ];
-  let randomIndexArr = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-  randomIndexArr = randomIndexArr.sort(() => Math.random() - 0.5);
-  for (let i = 1; i < squareInfo.length; i++) {
-    squareInfo[i].value = randomIndexArr[i - 1];
+
+  let randomIndexArr = [1, 2, 3, 4, 5, 6, 7, 8, 100];
+  let randomIndexArr1 = [1, 2, 3, 4, 5, 6, 7, 8, 100];
+  function shuffle(array: number[]) {
+    var m = array.length,
+      t,
+      i;
+
+    // While there remain elements to shuffle…
+    while (m) {
+      // Pick a remaining element…
+      i = Math.floor(Math.random() * m--);
+
+      // And swap it with the current element.
+      t = array[m];
+      array[m] = array[i];
+      array[i] = t;
+    }
+
+    return array;
   }
+  function random() {
+    shuffle(randomIndexArr);
+    console.log(randomIndexArr);
+    for (let i = 0; i < randomIndexArr.length - 1; i++) {
+      for (let j = i + 1; j < randomIndexArr.length; j++) {
+        if (randomIndexArr[i] > randomIndexArr[j] && randomIndexArr[i] != 100) {
+          inversion++;
+        }
+      }
+    }
+    console.log('first:' + inversion);
+
+    if (inversion % 2 == 0) {
+      if (randomIndexArr[0] != 100 && randomIndexArr[1] != 100) {
+        var temp = randomIndexArr[0];
+        randomIndexArr[0] = randomIndexArr[1];
+        randomIndexArr[1] = temp;
+      } else {
+        var temp = randomIndexArr[randomIndexArr.length - 1];
+        randomIndexArr[randomIndexArr.length - 1] =
+          randomIndexArr[randomIndexArr.length - 2];
+        randomIndexArr[randomIndexArr.length - 2] = temp;
+      }
+    }
+
+    for (let i = 1; i < squareInfo.length; i++) {
+      squareInfo[i].value = randomIndexArr[i - 1];
+    }
+    console.log('second:' + inversion);
+    inversion = 0;
+  }
+  function random2() {
+    randomIndexArr1 = randomIndexArr.sort(() => Math.random() - 0.5);
+    for (let i = 0; i < randomIndexArr1.length - 1; i++) {
+      for (let j = i + 1; j < randomIndexArr1.length; j++) {
+        if (
+          randomIndexArr1[i] > randomIndexArr1[j] &&
+          randomIndexArr1[i] != 100
+        ) {
+          inversion1++;
+        }
+      }
+    }
+
+    if (inversion1 % 2 == 0) {
+      var temp = randomIndexArr1[0];
+      randomIndexArr1[0] = randomIndexArr1[1];
+      randomIndexArr1[1] = temp;
+    }
+    squareInfo[0].coorY = 19;
+    squareInfo[emptyIndex].coorX = 4.5;
+    squareInfo[emptyIndex].coorY = 33;
+
+    for (let i = 1; i < squareInfo.length; i++) {
+      squareInfo[i].value = randomIndexArr1[i - 1];
+    }
+    inversion1 = 0;
+  }
+  random();
   let emptyIndex: number;
   let squareChooseIndex: number;
 
@@ -128,7 +196,12 @@ const init = async () => {
     batch.draw(whiteTex, 0, 0, 50, 100);
     batch.draw(bgImg, 0, 0, 50, 100);
 
-    emptyIndex = squareInfo.findIndex(x => x.value === 100); //ok
+    emptyIndex = squareInfo.findIndex(x => x.value === 100);
+    index0 = squareInfo.findIndex(x => x.value === 0);
+    index1 = squareInfo.findIndex(x => x.value === 3);
+    index2 = squareInfo.findIndex(x => x.value === 6);
+
+    //ok
     //draw square
 
     //square co the swap
@@ -281,7 +354,6 @@ const init = async () => {
               );
               squareInfo[squareChooseIndex].coorY =
                 squareInfo[emptyIndex].coorY;
-              console.log(squareInfo[squareChooseIndex].coorY);
               squareInfo[emptyIndex].coorY = squareInfo[emptyIndex].coorY - 14;
 
               squareChooseAssigend = true;
@@ -312,7 +384,6 @@ const init = async () => {
               );
               squareInfo[squareChooseIndex].coorY =
                 squareInfo[emptyIndex].coorY;
-              console.log(squareInfo[squareChooseIndex].coorY);
               squareInfo[emptyIndex].coorY = squareInfo[emptyIndex].coorY + 14;
 
               squareChooseAssigend = true;
@@ -321,6 +392,92 @@ const init = async () => {
         }
       }
     }
+    if (
+      squareInfo[emptyIndex].coorY == 19 &&
+      squareInfo[index0].coorX == 4.5 &&
+      squareInfo[index0].coorY == 33 &&
+      squareInfo[index1].coorX == 18.5 &&
+      squareInfo[index1].coorY == 33 &&
+      squareInfo[index2].coorX == 32.5 &&
+      squareInfo[index2].coorY == 33
+    ) {
+      if (height < 14 && width < 14) {
+        regions[0].draw(
+          batch,
+          4.5,
+          33,
+          (height += 0.05 * delta),
+          (width += 0.05 * delta)
+        );
+        regions[3].draw(
+          batch,
+          18.5,
+          33,
+          (height += 0.05 * delta),
+          (width += 0.05 * delta)
+        );
+        regions[6].draw(
+          batch,
+          32.5,
+          33,
+          (height += 0.05 * delta),
+          (width += 0.05 * delta)
+        );
+        regions[1].draw(
+          batch,
+          4.5,
+          47,
+          (height += 0.05 * delta),
+          (width += 0.05 * delta)
+        );
+        regions[4].draw(
+          batch,
+          18.5,
+          47,
+          (height += 0.05 * delta),
+          (width += 0.05 * delta)
+        );
+        regions[7].draw(
+          batch,
+          32.5,
+          47,
+          (height += 0.05 * delta),
+          (width += 0.05 * delta)
+        );
+        regions[2].draw(
+          batch,
+          4.5,
+          61,
+          (height += 0.05 * delta),
+          (width += 0.05 * delta)
+        );
+
+        regions[8].draw(
+          batch,
+          32.5,
+          61,
+          (height += 0.05 * delta),
+          (width += 0.05 * delta)
+        );
+        regions[5].draw(
+          batch,
+          18.5,
+          61,
+          (height += 0.05 * delta),
+          (width += 0.05 * delta)
+        );
+      }
+    }
+    if (height >= 14 && width >= 14) {
+      canSwap = 1;
+    }
+    if (canSwap == 1) {
+      random2();
+      height = 13;
+      width = 13;
+      canSwap = 0;
+    }
+
     batch.draw(lineDoc, 1.5, 18.5, 5, 56.5);
     batch.draw(lineDoc, 44.5, 32.5, 3, 42.5);
     batch.draw(lineDoc, 16.5, 18.5, 3, 14);
@@ -336,7 +493,6 @@ const init = async () => {
       startSwap = 0;
     }
 
-    console.log(squareInfo);
     batch.setColor(0.4, 0.4, 0.4, 1);
 
     batch.setColor(1, 1, 1, 1);
