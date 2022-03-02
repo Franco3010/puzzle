@@ -119,7 +119,7 @@ const init = async () => {
 
     return array;
   }
-  function random() {
+  function random() { //random các miếng ghép hình 
     shuffle(randomIndexArr);
     console.log(randomIndexArr);
     for (let i = 0; i < randomIndexArr.length - 1; i++) {
@@ -150,7 +150,7 @@ const init = async () => {
     console.log('second:' + inversion);
     inversion = 0;
   }
-  function random2() {
+  function random2() {  //random các miếng ghép hình
     randomIndexArr1 = randomIndexArr.sort(() => Math.random() - 0.5);
     for (let i = 0; i < randomIndexArr1.length - 1; i++) {
       for (let j = i + 1; j < randomIndexArr1.length; j++) {
@@ -201,10 +201,8 @@ const init = async () => {
     index1 = squareInfo.findIndex(x => x.value === 3);
     index2 = squareInfo.findIndex(x => x.value === 6);
 
-    //ok
-    //draw square
 
-    //square co the swap
+    //lưu trữ square co the swap trong các square (lọc từ square info) (nội dung: tránh những thằng ô trống và đổi ô cùng hàng hoặc cùng cột với cái ô trống)
     canSwapSquare = squareInfo.filter(
       square =>
         (square.value != 100 &&
@@ -221,7 +219,7 @@ const init = async () => {
       let varY = inputHandler.getTouchedWorldCoord().y;
       for (let square of canSwapSquare) {
         if (
-          varX > square.coorX &&
+          varX > square.coorX && //điều kiện check ô nào được bấm vào. Lưu vào giá trị value và index của cái ô được bấm vào (ô này là ô trong mảng canSwapSquare(ô này là ô duy nhất))
           varX < square.coorX + 13 &&
           varY > square.coorY &&
           varY < square.coorY + 13 &&
@@ -230,7 +228,7 @@ const init = async () => {
           squareChoose = square.value;
           squareChooseIndex = squareInfo.findIndex(
             x => x.value === squareChoose
-          ); //ok
+          ); 
 
           startSwap = 1;
         }
@@ -242,13 +240,13 @@ const init = async () => {
       let varY = inputHandler.getTouchedWorldCoord().y;
       for (let square of canSwapSquare) {
         if (
-          varX > square.coorX &&
+          varX > square.coorX &&    //lấy mốc rìa trên và rìa dưới
           varX < square.coorX + 13 &&
           varY > square.coorY &&
           varY < square.coorY + 13 &&
           square.value != 100
         ) {
-          squareChoose = square.value;
+          squareChoose = square.value;//
           squareChooseIndex = squareInfo.findIndex(
             x => x.value === squareChoose
           ); //ok
